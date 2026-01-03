@@ -1,6 +1,6 @@
 {
   "name": "next-wedding-generator",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A comprehensive AI-powered wedding website generator based on Next.js, Firebase, and Gemini AI.",
   "repository": {
     "type": "git",
