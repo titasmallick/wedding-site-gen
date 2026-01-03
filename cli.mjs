@@ -17,7 +17,7 @@ const rl = readline.createInterface({
 const question = (query) => new Promise((resolve) => rl.question(query, resolve));
 
 async function main() {
-  console.log("Welcome to the Wedding Website Generator v2.0! 💍");
+  console.log("Welcome to the Wedding Website Generator v3.0! 💍");
   console.log("This tool will help you scaffold a personalized wedding website.\n");
 
   const config = {};

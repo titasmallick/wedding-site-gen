@@ -1,6 +1,6 @@
 {
-  "name": "@titas_mallick/wedding-site-gen",
-  "version": "2.0.5",
+  "name": "next-wedding-generator",
+  "version": "3.0.0",
   "description": "A comprehensive AI-powered wedding website generator based on Next.js, Firebase, and Gemini AI.",
   "repository": {
     "type": "git",

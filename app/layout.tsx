@@ -13,7 +13,7 @@ import ConciergeBot from "@/components/ConciergeBot";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("your-wedding-site.com"),
+  metadataBase: new URL("https://your-wedding-site.com"),
 
   title: {
     default: siteConfig.name,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Groom Name",
-      url: "your-wedding-site.com",
+      url: "https://your-wedding-site.com",
     },
   ],
   creator: "Groom Name",
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "your-wedding-site.com",
+    url: "https://your-wedding-site.com/",
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
-        url: "your-wedding-site.com/invite.jpeg",
+        url: "https://your-wedding-site.com/invite.jpeg",
         width: 1200,
         height: 630,
         alt: "Wedding Invitation",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ["your-wedding-site.com/invite.jpeg"],
+    images: ["https://your-wedding-site.com/invite.jpeg"],
     creator: "@wedding",
   },
   robots: {

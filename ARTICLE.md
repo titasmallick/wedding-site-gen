@@ -2,7 +2,7 @@
 
 In the era of digital transformation, the traditional paper wedding invitation is becoming a relic of the past. But while digital invitations are rising, most are just static landing pages. I wanted something more—something interactive, intelligent, and truly helpful for both the couple and the guests.
 
-That’s why I built **Wedding Website Generator v2.0**, a production-ready CLI tool that scaffolds a complete, high-end wedding application in minutes.
+That’s why I built **next-wedding-generator**, a production-ready CLI tool that scaffolds a complete, high-end wedding application in minutes.
 
 ---
 
@@ -54,7 +54,7 @@ One of the best parts about this project is that it is an **npm utility**. You d
 ### 1. Generate
 Simply run:
 ```bash
-npx @titas_mallick/wedding-site-gen
+npx next-wedding-generator
 ```
 The CLI will ask for the couple's names, the wedding date, and your preferred theme. It then generates a sanitized, personalized codebase.
 
@@ -71,7 +71,7 @@ Replace the placeholder images in the `/public/` folder with your own pre-weddin
 Weddings are about stories. By using AI and modern web tech, we can tell those stories in a way that is engaging, modern, and stress-free. Whether you're a developer looking to build a site for a friend or a tech-savvy couple, this tool provides a professional foundation to build upon.
 
 **Explore the Project:**
-*   📦 **NPM Package**: [@titas_mallick/wedding-site-gen](https://www.npmjs.com/package/@titas_mallick/wedding-site-gen)
+*   📦 **NPM Package**: [next-wedding-generator](https://www.npmjs.com/package/next-wedding-generator)
 *   💻 **GitHub Repository**: [titasmallick/wedding-site-gen](https://github.com/titasmallick/wedding-site-gen)
 
 **Happy Building, and Happy Wedding!** 💍✨

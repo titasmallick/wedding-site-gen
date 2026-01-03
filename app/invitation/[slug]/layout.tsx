@@ -8,13 +8,13 @@ export const metadata: Metadata = {
     title: "You're Invited! | Wedding",
     description:
       "We would be honored to have you join us as we celebrate our wedding. View details for the ceremony and reception.",
-    url: "your-wedding-site.com/invitation",
+    url: "https://your-wedding-site.com/invitation",
     siteName: "Groom & Bride",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "your-wedding-site.com/invite.jpeg", // Updated to use absolute URL for WhatsApp
+        url: "https://your-wedding-site.com/invite.jpeg", // Updated to use absolute URL for WhatsApp
         width: 1200,
         height: 630,
         alt: "Wedding Invitation",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Wedding Invitation | Groom & Bride",
     description: "Join us in celebrating our special day.",
-    images: ["your-wedding-site.com/invite.jpeg"], // Updated to use absolute URL for WhatsApp
+    images: ["https://your-wedding-site.com/invite.jpeg"], // Updated to use absolute URL for WhatsApp
   },
 };
 

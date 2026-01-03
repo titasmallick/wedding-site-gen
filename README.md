@@ -1,6 +1,6 @@
-# 💍 Wedding Website Generator v2.0 (AI-Powered)
+# 💍 Wedding Website Generator v3.0 (AI-Powered)
 
-[![NPM Version](https://img.shields.io/npm/v/@titas_mallick/wedding-site-gen?color=pink)](https://www.npmjs.com/package/@titas_mallick/wedding-site-gen)
+[![NPM Version](https://img.shields.io/npm/v/next-wedding-generator?color=pink)](https://www.npmjs.com/package/next-wedding-generator)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/titasmallick/wedding-site-gen)
 
 > **The ultimate digital companion for your special day.** Scaffold, personalize, and deploy a feature-rich wedding application in minutes.
@@ -12,7 +12,7 @@
 ### Initialize Your Project
 Run the command below to start the interactive CLI:
 ```bash
-npx @titas_mallick/wedding-site-gen
+npx next-wedding-generator
 ```
 
 ### CLI Prompt Reference
