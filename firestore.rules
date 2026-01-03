@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Wishes collection - anyone can read and write
+    match /wishes/{wishId} {
+      allow read, write: if true;
+    }
+    // Song requests collection - anyone can read and write
+    match /song_requests/{requestId} {
+      allow read, write: if true;
+    }
+    // Guestbook collection - anyone can read and write
+    match /guestbook/{entryId} {
+      allow read, write: if true;
+    }
+    // RSVPs collection - anyone can read and write
+    match /rsvps/{rsvpId} {
+      allow read, write: if true;
+    }
+    // Email reminders collection - public read, authenticated write only
+    match /email-reminders/{reminderId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // All other documents - read public, write authenticated only
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
