@@ -1,31 +1,31 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Wedding Invitation | Titas & Sukanya",
+  title: "Wedding Invitation | Groom & Bride",
   description:
-    "We cordially invite you to celebrate the wedding of Titas and Sukanya. Click to view your personalized invitation and event details.",
+    "We cordially invite you to celebrate the wedding of the couple. Click to view your personalized invitation and event details.",
   openGraph: {
-    title: "You're Invited! | Titas & Sukanya Wedding",
+    title: "You're Invited! | Wedding",
     description:
       "We would be honored to have you join us as we celebrate our wedding. View details for the ceremony and reception.",
-    url: "https://www.titas-sukanya-for.life/invitation",
-    siteName: "Titas & Sukanya",
+    url: "your-wedding-site.com/invitation",
+    siteName: "Groom & Bride",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://www.titas-sukanya-for.life/invite.jpeg", // Updated to use absolute URL for WhatsApp
+        url: "your-wedding-site.com/invite.jpeg", // Updated to use absolute URL for WhatsApp
         width: 1200,
         height: 630,
-        alt: "Titas & Sukanya Wedding Invitation",
+        alt: "Wedding Invitation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wedding Invitation | Titas & Sukanya",
+    title: "Wedding Invitation | Groom & Bride",
     description: "Join us in celebrating our special day.",
-    images: ["https://www.titas-sukanya-for.life/invite.jpeg"], // Updated to use absolute URL for WhatsApp
+    images: ["your-wedding-site.com/invite.jpeg"], // Updated to use absolute URL for WhatsApp
   },
 };
 

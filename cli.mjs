@@ -98,6 +98,12 @@ async function main() {
     { search: /2026-01-23/g, replace: config.weddingDateISO },
     { search: /admin@example.com/g, replace: config.adminEmail },
     { search: /your-upi-id@upi/g, replace: config.upiId },
+    { search: /https:\/\/www.titas-sukanya-for.life/g, replace: config.siteUrl },
+    { search: /your-wedding-site.com/g, replace: config.siteUrl.replace(/^https?:\/\//, '') },
+    { search: /Wedding Invitation \| Groom & Bride/g, replace: `Wedding Invitation | ${config.groomName} & ${config.brideName}` },
+    { search: /celebrate the wedding of the couple/g, replace: `celebrate the wedding of ${config.groomName} and ${config.brideName}` },
+    { search: /Titas and Sukanya Wedding/g, replace: `${config.groomName} and ${config.brideName} Wedding` },
+    { search: /Titas & Sukanya Wedding/g, replace: `${config.groomName} & ${config.brideName} Wedding` },
     // Code-level replacements for exported components/functions
     { search: /TitasLayout/g, replace: `${config.groomName}Layout` },
     { search: /SukanyaLayout/g, replace: `${config.brideName}Layout` },

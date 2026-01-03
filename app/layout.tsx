@@ -13,7 +13,7 @@ import ConciergeBot from "@/components/ConciergeBot";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.titas-sukanya-for.life"),
+  metadataBase: new URL("your-wedding-site.com"),
 
   title: {
     default: siteConfig.name,
@@ -22,21 +22,19 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: [
     "Wedding",
-    "Titas",
-    "Sukanya",
+    "Groom",
+    "Bride",
     "Marriage",
     "Celebration",
     "Event",
-    "Serampore Wedding",
-    "Titas and Sukanya Wedding",
   ],
   authors: [
     {
-      name: "Titas Mallick",
-      url: "https://www.titas-sukanya-for.life",
+      name: "Groom Name",
+      url: "your-wedding-site.com",
     },
   ],
-  creator: "Titas Mallick",
+  creator: "Groom Name",
   icons: {
     icon: "/love-birds.png",
     shortcut: "/love-birds.png",
@@ -48,16 +46,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.titas-sukanya-for.life/",
+    url: "your-wedding-site.com",
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
-        url: "https://www.titas-sukanya-for.life/invite.jpeg",
+        url: "your-wedding-site.com/invite.jpeg",
         width: 1200,
         height: 630,
-        alt: "Titas & Sukanya Wedding Invitation",
+        alt: "Wedding Invitation",
       },
     ],
   },
@@ -65,8 +63,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ["https://www.titas-sukanya-for.life/invite.jpeg"],
-    creator: "@titas",
+    images: ["your-wedding-site.com/invite.jpeg"],
+    creator: "@wedding",
   },
   robots: {
     index: true,
