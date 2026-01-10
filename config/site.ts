@@ -72,6 +72,10 @@ export const siteConfig = {
       href: "/travel-guide",
     },
     {
+      label: "Gift Registry",
+      href: "/registry/maker", // Default to maker or info page if you have one
+    },
+    {
       label: "Send Wishes",
       href: "/sagun",
     },

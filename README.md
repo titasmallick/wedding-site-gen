@@ -143,5 +143,24 @@ Set up a Cron Job (Vercel or GitHub Actions) to trigger:
 
 ---
 
+## ✨ New Interactive Features (v3.1)
+
+### 📸 AI Face Recognition (Search by Selfie)
+Guests can now find all photos they appear in across the entire guestbook by simply uploading a selfie. This feature uses client-side AI detection and vector matching for privacy and speed.
+- **Route**: `/guestbook/search`
+- **Requires**: Models in `/public/models` (scaffolded automatically).
+
+### 🎁 Collaborative Gift Registry
+A modern gifting platform where guests can contribute to specific items for the couple's new home.
+- **Group Gifting**: Support for multiple guests to contribute to high-value items.
+- **Management**: Admin dashboard at `/registry/maker` to manage gift items and track contributions.
+- **Personalized Access**: Guests access their registry view via `/registry/[guest-slug]`.
+
+### ⚡ Bulk Media Upload
+Admin tool to rapidly populate the guestbook gallery with official event photography.
+- **Route**: `/guestbook/bulkupload` (Admin only).
+
+---
+
 ## 📜 License
 MIT License. Built with ❤️ for the community.

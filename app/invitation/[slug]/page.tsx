@@ -673,6 +673,16 @@ export default function InvitationPage({
                 </Button>
               </div>
             </div>
+
+            {/* Discreet Registry Link */}
+            <div className="mt-12 opacity-60 hover:opacity-100 transition-opacity duration-500">
+              <Link
+                href={`/registry/${slug}`}
+                className={`${fontMono.className} text-[10px] uppercase tracking-[0.2em] text-wedding-pink-600 dark:text-wedding-pink-400 font-bold`}
+              >
+                Building our home together • Gift Registry
+              </Link>
+            </div>
           </CardBody>
         </Card>
       </motion.div>

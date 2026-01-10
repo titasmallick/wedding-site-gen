@@ -28,11 +28,15 @@ import {
   serverTimestamp,
   deleteDoc,
   doc,
+  vector,
+  getDocs,
+  where,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import firebaseApp from "@/config/firebase";
 import { fontCursive, fontSans } from "@/config/fonts";
+import FaceRecognition from "@/app/guestbook/components/FaceRecognition";
 
 const db = getFirestore(firebaseApp());
 const auth = getAuth(firebaseApp());
@@ -60,12 +64,15 @@ export default function GuestbookPage() {
   const [photos, setPhotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("");
   const [user, setUser] = useState<any>(null);
   const [formData, setFormData] = useState({
     name: "",
     file: null as File | null,
     captcha: "",
   });
+  const [faceData, setFaceData] = useState<any[]>([]);
+  const [isDetecting, setIsDetecting] = useState<boolean | string>(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState<any>(null);
@@ -89,17 +96,32 @@ export default function GuestbookPage() {
 
   const handleConfirmDelete = async () => {
     if (!imageToDelete) return;
+
+    // Find the photo object to get the URL
+    const photo = photos.find((p) => p.id === imageToDelete);
+    if (!photo) return;
+
     try {
+      // 1. Delete from Guestbook Collection
       await deleteDoc(doc(db, "guestbook", imageToDelete));
+
+      // 2. Delete from Facedata Collection (all faces associated with this photo)
+      const q = query(collection(db, "facedata"), where("imageUrl", "==", photo.imageUrl));
+      const querySnapshot = await getDocs(q);
+
+      const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+      await Promise.all(deletePromises);
+
       addToast({
         title: "Deleted",
-        description: "Memory removed from gallery.",
+        description: "Memory and associated face data removed.",
         color: "success",
       });
     } catch (err) {
+      console.error("Delete error:", err);
       addToast({
         title: "Error",
-        description: "Failed to delete.",
+        description: "Failed to delete completely.",
         color: "danger",
       });
     } finally {
@@ -193,9 +215,11 @@ export default function GuestbookPage() {
     setUploading(true);
     try {
       // 1. Resize and compress image
+      setUploadStatus("Resizing Photo...");
       const resizedBlob = await resizeImage(formData.file);
 
       // 2. Upload to Cloudinary
+      setUploadStatus("Uploading to Cloud...");
       const data = new FormData();
 
       data.append("file", resizedBlob, "upload.jpg");
@@ -209,11 +233,33 @@ export default function GuestbookPage() {
 
       if (file.secure_url) {
         // 2. Save URL to Firestore
+        setUploadStatus("Saving Memory...");
         await addDoc(collection(db, "guestbook"), {
           name: formData.name,
           imageUrl: file.secure_url,
           createdAt: serverTimestamp(),
         });
+
+        // 3. Save Face Data to Firestore (One document per face for Vector Search)
+        if (faceData.length > 0) {
+          setUploadStatus("Finalizing Face Data...");
+          const facePromises = faceData.map((face) => {
+            return addDoc(collection(db, "facedata"), {
+              photoId: file.secure_url, // Using URL as ID linkage for simplicity, or we could use the doc ref id from above if we awaited it
+              imageUrl: file.secure_url,
+              name: formData.name,
+              createdAt: serverTimestamp(),
+              embedding: vector(face.descriptor), // Top-level vector field
+              descriptor: face.descriptor, // Backup raw array
+              metadata: {
+                detectionScore: face.detection.score,
+                // other metadata if needed
+              },
+            });
+          });
+
+          await Promise.all(facePromises);
+        }
 
         addToast({
           title: "Memory Shared!",
@@ -221,6 +267,7 @@ export default function GuestbookPage() {
           color: "success",
         });
         setFormData({ name: "", file: null, captcha: "" });
+        setFaceData([]);
       }
     } catch (err) {
       console.error("Upload error", err);
@@ -231,6 +278,7 @@ export default function GuestbookPage() {
       });
     } finally {
       setUploading(false);
+      setUploadStatus("");
     }
   };
 
@@ -267,6 +315,58 @@ export default function GuestbookPage() {
           Capture a moment and share it with us! Upload a selfie or a memory to
           be part of our wedding gallery forever.
         </p>
+        <div className="pt-4 flex flex-wrap justify-center gap-4">
+          <Button
+            as="a"
+            className="bg-wedding-pink-100 text-wedding-pink-600 dark:bg-wedding-pink-900/30 dark:text-wedding-pink-300 font-bold"
+            href="/guestbook/search"
+            startContent={
+              <svg
+                fill="none"
+                height="18"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="18"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" x2="16.65" y1="21" y2="16.65" />
+              </svg>
+            }
+            variant="flat"
+          >
+            Find My Photos
+          </Button>
+
+          {user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+            <Button
+              as="a"
+              className="bg-default-100 text-default-600 dark:bg-zinc-800 dark:text-default-400 font-bold"
+              href="/guestbook/bulkupload"
+              startContent={
+                <svg
+                  fill="none"
+                  height="18"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="18"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" x2="12" y1="3" y2="15" />
+                </svg>
+              }
+              variant="flat"
+            >
+              Bulk Upload
+            </Button>
+          )}
+        </div>
       </section>
 
       {/* Upload Section */}
@@ -297,18 +397,63 @@ export default function GuestbookPage() {
               type="file"
               onChange={handleFileChange}
             />
-            <label
-              className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-wedding-pink-200 dark:border-wedding-pink-900/30 rounded-2xl cursor-pointer hover:bg-wedding-pink-50 dark:hover:bg-wedding-pink-900/10 transition-colors"
-              htmlFor="photo-upload"
-            >
-              {formData.file ? (
-                <div className="text-center text-wedding-pink-600 font-bold">
-                  ✓ {formData.file.name}
+            <input
+              accept="image/*"
+              capture="user"
+              className="hidden"
+              id="camera-upload"
+              multiple={false}
+              type="file"
+              onChange={handleFileChange}
+            />
+            {formData.file ? (
+              <div className="flex flex-col items-center gap-4 py-4">
+                <div className="relative">
+                  <div className="relative w-32 h-32 rounded-2xl overflow-hidden border-4 border-wedding-pink-500 shadow-xl">
+                    <img
+                      alt="Upload Preview"
+                      className="object-cover w-full h-full"
+                      src={URL.createObjectURL(formData.file)}
+                    />
+                  </div>
+                  <Button
+                    isIconOnly
+                    className="absolute -bottom-2 -right-2 rounded-full shadow-lg bg-danger text-white z-10"
+                    size="sm"
+                    onPress={() => {
+                      setFormData({ ...formData, file: null });
+                      setFaceData([]);
+                    }}
+                  >
+                    <svg
+                      fill="none"
+                      height="16"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      width="16"
+                    >
+                      <line x1="18" x2="6" y1="6" y2="18" />
+                      <line x1="6" x2="18" y1="6" y2="18" />
+                    </svg>
+                  </Button>
                 </div>
-              ) : (
-                <>
+                <p className="text-xs text-default-400 font-medium">
+                  {formData.file.name}
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4 w-full">
+                {/* Take Selfie - Mobile Only */}
+                <Button
+                  className="md:hidden w-full h-32 flex-col gap-2 bg-gradient-to-br from-wedding-pink-50 to-white dark:from-wedding-pink-900/20 dark:to-zinc-900 border-2 border-dashed border-wedding-pink-200 dark:border-wedding-pink-900/30 rounded-2xl transition-all group hover:border-wedding-pink-400"
+                  variant="flat"
+                  onPress={() => document.getElementById("camera-upload")?.click()}
+                >
                   <svg
-                    className="text-wedding-pink-400 mb-2"
+                    className="text-wedding-pink-400 group-hover:scale-110 transition-transform"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -318,16 +463,50 @@ export default function GuestbookPage() {
                     viewBox="0 0 24 24"
                     width="24"
                   >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" x2="12" y1="3" y2="15" />
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
                   </svg>
-                  <span className="text-xs text-default-500 font-medium">
-                    Select a Photo to Upload
+                  <span className="text-xs text-default-600 font-bold uppercase tracking-wider">
+                    Take Selfie
                   </span>
-                </>
-              )}
-            </label>
+                </Button>
+
+                {/* From Gallery - Desktop version (Big Button) */}
+                <Button
+                  className="hidden md:flex w-full h-32 flex-col gap-2 bg-gradient-to-br from-wedding-pink-50 to-white dark:from-wedding-pink-900/20 dark:to-zinc-900 border-2 border-dashed border-wedding-pink-200 dark:border-wedding-pink-900/30 rounded-2xl transition-all group hover:border-wedding-pink-400"
+                  variant="flat"
+                  onPress={() => document.getElementById("photo-upload")?.click()}
+                >
+                  <svg
+                    className="text-wedding-pink-400 group-hover:scale-110 transition-transform"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                  >
+                    <rect height="18" rx="2" ry="2" width="18" x="3" y="3" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21 15 16 10 5 21" />
+                  </svg>
+                  <span className="text-xs text-default-600 font-bold uppercase tracking-wider">
+                    Choose from Gallery
+                  </span>
+                </Button>
+
+                {/* From Gallery - Mobile version (Text link) */}
+                <button
+                  className="md:hidden text-xs text-default-400 hover:text-wedding-pink-500 underline transition-colors py-2"
+                  type="button"
+                  onClick={() => document.getElementById("photo-upload")?.click()}
+                >
+                  Or upload from gallery
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="p-4 bg-wedding-pink-50 dark:bg-wedding-pink-900/10 rounded-2xl border border-wedding-pink-100 dark:border-wedding-pink-800/30">
@@ -351,18 +530,45 @@ export default function GuestbookPage() {
             />
           </div>
 
+          {!isDetecting && formData.file && faceData.length === 0 && (
+            <div className="text-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <p className="text-xs text-yellow-600 dark:text-yellow-400">
+                ⚠️ No face detected. This photo won&apos;t be found via selfie
+                search.
+              </p>
+            </div>
+          )}
+
           <Button
             className="w-full bg-gradient-to-r from-wedding-pink-500 to-wedding-gold-500 text-white font-black h-14 text-lg rounded-full"
-            isDisabled={!formData.file || !formData.name}
-            isLoading={uploading}
+            isDisabled={!formData.file || !formData.name || !!isDetecting || uploading}
             type="submit"
           >
-            Share Memory
+            {isDetecting || uploading ? (
+              <div className="flex items-center gap-2">
+                <Spinner color="white" size="sm" />
+                <span>
+                  {uploading
+                    ? uploadStatus
+                    : typeof isDetecting === "string"
+                      ? isDetecting
+                      : "Scanning for Faces..."}
+                </span>
+              </div>
+            ) : (
+              "Share Memory"
+            )}
           </Button>
         </form>
       </Card>
 
       <Divider className="mb-16 opacity-50" />
+
+      <FaceRecognition
+        file={formData.file}
+        onFacesDetected={setFaceData}
+        onProcessingStatus={setIsDetecting}
+      />
 
       {/* Photos Grid */}
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
@@ -430,7 +636,7 @@ export default function GuestbookPage() {
                       <div className="flex flex-col gap-1.5">
                         <div className="flex items-center gap-2">
                           <Avatar
-                            className="w-6 h-6 text-[10px] bg-wedding-pink-500 text-white font-bold"
+                            className="w-6 h-6 text-[10px] bg-wedding-pink-500 text-white font-bold"      
                             name={photo.name}
                             size="sm"
                           />
@@ -438,7 +644,7 @@ export default function GuestbookPage() {
                             {photo.name}
                           </p>
                         </div>
-                        <p className="text-white/80 text-[9px] font-mono ml-8 uppercase tracking-wider">
+                        <p className="text-white/80 text-[9px] font-mono ml-8 uppercase tracking-wider">  
                           {timeAgo(photo.createdAt)}
                         </p>
                       </div>
@@ -451,9 +657,8 @@ export default function GuestbookPage() {
                           color="danger"
                           size="sm"
                           variant="light"
-                          onClick={(e) => e.stopPropagation()}
-                          onPress={(e) => {
-                            e.continuePropagation(); // HeroUI specific if needed, but standard stopPropagation is safer for native elements
+                          onClick={(e) => {
+                            e.stopPropagation();
                             handleDeleteClick(photo.id);
                           }}
                         >
@@ -514,7 +719,7 @@ export default function GuestbookPage() {
                   />
                   <div className="mt-6 bg-black/60 backdrop-blur-md px-8 py-3 rounded-full border border-white/20">
                     <p
-                      className={`${fontSans.className} text-white text-base md:text-lg font-bold`}
+                      className={`${fontSans.className} text-white text-base md:text-lg font-bold`}       
                     >
                       Memory by {selectedImage.name}
                     </p>
