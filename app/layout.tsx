@@ -11,6 +11,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import ConciergeBot from "@/components/ConciergeBot";
 import { SchemaMarkup } from "@/components/SchemaMarkup";
+import SayCode from "@/components/SayCode";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://your-wedding-site.com"),
@@ -103,6 +104,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       <body
         className={clsx("min-h-screen bg-background font-sans antialiased")}
       >
+        <SayCode />
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <div className="relative flex flex-col h-screen">
             <Navbar />

@@ -1,6 +1,6 @@
 {
   "name": "next-wedding-generator",
-  "version": "3.1.0",
+  "version": "3.1.2",
   "description": "A comprehensive AI-powered wedding website generator based on Next.js, Firebase, and Gemini AI.",
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
   "author": "Titas Mallick",
   "license": "MIT",
   "bin": {
-    "wedding-gen": "./cli.mjs"
+    "wedding-gen": "cli.mjs"
   },
   "scripts": {
     "dev": "next dev --turbopack",

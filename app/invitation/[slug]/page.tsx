@@ -115,7 +115,7 @@ export default function InvitationPage({
       await new Promise((resolve) => setTimeout(resolve, 600));
 
       const relationMap: Record<string, string> = {
-        family: "আত্মীয়",
+        family: "আত্মীয়",
         friend: "বন্ধু",
         colleague: "সহকর্মী",
         other: "শুভাকাঙ্ক্ষী",
@@ -129,8 +129,8 @@ export default function InvitationPage({
     } catch (error) {
       console.error("Translation error:", error);
       addToast({
-        title: "অনুবাদ ব্যর্থ হয়েছে",
-        description: "দুঃখিত, অনুবাদ করার সময় একটি সমস্যা হয়েছে।",
+        title: "অনুবাদ ব্যর্থ হয়েছে",
+        description: "দুঃখিত, অনুবাদ করার সময় একটি সমস্যা হয়েছে।",
         color: "danger",
       });
       setTranslatedData(null);
@@ -178,7 +178,7 @@ export default function InvitationPage({
   const events: any = {
     registration: {
       title: translatedData ? "শুভ আংটি বদল" : "Engagement Ceremony",
-      date: translatedData ? "২৩শে নভেম্বর, ২০২৫" : "23rd November 2025",
+      date: translatedData ? "২৩শে নভেম্বর, ২০২৫" : "23rd November 2025",    
       venue: translatedData ? "শ্রীরামপুর" : "Srerampore",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d229.96354422747754!2d88.34617843336005!3d22.749911773448982!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89b1ee7f14647%3A0xe44dfacd65bb5f48!2sMohan%20Joyti%20Banquet%20Hall!5e0!3m2!1sen!2sin!4v1758679491438!5m2!1sen!2sin",
       mapHref: "https://maps.app.goo.gl/diSeycey1hyqqtAu8",
@@ -187,16 +187,16 @@ export default function InvitationPage({
     },
     wedding: {
       title: translatedData ? "শুভ বিবাহ" : "Wedding Ceremony",
-      date: translatedData ? "২৩শে জানুয়ারি, ২০২৬" : "23rd January 2026",
+      date: translatedData ? "২৩শে জানুয়ারি, ২০২৬" : "23rd January 2026",
       venue: translatedData ? "শ্রীরামপুর" : "Serampore",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.3779465759876!2d88.33077587399126!3d22.75135112639763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89b287ddfb39b%3A0xc67348083f7cea9d!2sAnandamayee%20Bhawan!5e0!3m2!1sen!2sin!4v1765848206729!5m2!1sen!2sin",
       mapHref: "https://maps.app.goo.gl/G5R3bkcTwwa2d54R8",
       time: translatedData ? "সন্ধ্যা ০৬:০০টা" : "06:00 PM",
-      direction: translatedData ? "বেল্টিং বাজারের কাছে" : "Near Belting Bazar",
+      direction: translatedData ? "বেলটিং বাজারের কাছে" : "Near Belting Bazar",
     },
     reception: {
       title: translatedData ? "প্রীতিভোজ" : "Reception Celebration",
-      date: translatedData ? "২৫শে জানুয়ারি, ২০২৬" : "25th January 2026",
+      date: translatedData ? "২৫শে জানুয়ারি, ২০২৬" : "25th January 2026",
       venue: translatedData ? "কোন্নগর" : "Konnagar",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.8284397695707!2d88.35295167398938!3d22.697429628386114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89c85a91d38fd%3A0x19dcd2c61895f79f!2sKonnagar%20Friends%20Union%20Club%20Community%20Centre%2FGangadhar%20Chatterjee%20Bhaban!5e0!3m2!1sen!2sin!4v1765848530552!5m2!1sen!2sin",
       mapHref: "https://maps.app.goo.gl/ubdTsy6tnYMsvSSXA",
@@ -298,9 +298,9 @@ export default function InvitationPage({
             <div className="absolute inset-0 bg-[url('/corner1-01.svg')] opacity-20 bg-cover bg-center mix-blend-overlay" />
             <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4 text-center">
               <p
-                className={`${fontCursive.className} text-4xl md:text-7xl font-bold drop-shadow-md px-2`}
+                className={`${fontCursive.className} text-4xl md:text-7xl font-bold drop-shadow-md px-2`} 
               >
-                Groom & Bride
+                Titas & Sukanya
               </p>
               <p
                 className={`${fontMono.className} mt-2 md:mt-4 text-[10px] md:text-base uppercase tracking-widest opacity-90 px-4`}
@@ -316,7 +316,7 @@ export default function InvitationPage({
               variant="flat"
               onPress={translateContent}
             >
-              {translatedData ? "See English" : "বাংলায় দেখুন"}
+              {translatedData ? "See English" : "বাংলায় দেখুন"}
             </Button>
           </div>
 
@@ -326,7 +326,7 @@ export default function InvitationPage({
               <p
                 className={`${fontCursive.className} text-3xl md:text-5xl text-wedding-pink-600 dark:text-wedding-pink-400 mb-4 md:mb-6`}
               >
-                {translatedData ? "প্রিয়" : "Dear"}{" "}
+                {translatedData ? "প্রিয়" : "Dear"}{" "}
                 {translatedData?.guestName || guest.name}
                 {guest.invitedGuests > 1 && (
                   <span className="text-xl md:text-3xl ml-2">
@@ -343,12 +343,12 @@ export default function InvitationPage({
                   {translatedData ? (
                     <>
                       {translatedData.welcomeNote ||
-                        `${translatedData.familySide === "bride" ? "কনে" : "বর"}-র পক্ষ থেকে একজন প্রিয় ${translatedData.relation} হিসেবে আপনার উপস্থিতি আমাদের কাছে অনেক গুরুত্বপূর্ণ।`}
+                        `${translatedData.familySide === "bride" ? "কনে" : "বর"}-র পক্ষ থেকে একজন প্রিয় ${translatedData.relation} হিসেবে আপনার উপস্থিতি আমাদের কাছে অনেক গুরুত্বপূর্ণ।`}
                     </>
                   ) : (
                     <>
                       As a cherished {guest.relation.toLowerCase()} from the{" "}
-                      <span className="font-semibold text-wedding-gold-600 dark:text-wedding-gold-400">
+                      <span className="font-semibold text-wedding-gold-600 dark:text-wedding-gold-400">   
                         {guest.familySide === "bride" ? "Bride's" : "Groom's"}
                       </span>{" "}
                       side, your presence would mean the world to us as we begin
@@ -358,7 +358,7 @@ export default function InvitationPage({
                 </p>
                 <p>
                   {translatedData
-                    ? "আমরা আপনাকে নিম্নলিখিত অনুষ্ঠানে যোগ দেওয়ার জন্য সাদর আমন্ত্রণ জানাচ্ছি:"
+                    ? "আমরা আপনাকে নিম্নলিখিত অনুষ্ঠানে যোগ দেওয়ার জন্য সাদর আমন্ত্রণ জানাচ্ছি:"
                     : `We warmly invite you to join us for the following celebration${guest.invitedFor.length > 1 ? "s" : ""}:`}
                 </p>
               </div>
@@ -403,7 +403,7 @@ export default function InvitationPage({
                       aria-label={events[eventKey].title}
                       className="bg-default-50 dark:bg-default-100/5 border border-default-100 dark:border-default-800 rounded-xl shadow-sm mb-4"
                       title={
-                        <span className="font-bold text-wedding-pink-600 dark:text-wedding-pink-400">
+                        <span className="font-bold text-wedding-pink-600 dark:text-wedding-pink-400">     
                           {events[eventKey].title}
                         </span>
                       }
@@ -629,7 +629,7 @@ export default function InvitationPage({
                     aria-label="Email Address"
                   />
                   <Button
-                    className="w-full sm:w-auto bg-wedding-pink-500 text-white font-semibold shadow-md"
+                    className="w-full sm:w-auto bg-wedding-pink-500 text-white font-semibold shadow-md"   
                     type="submit"
                   >
                     Notify Me

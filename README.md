@@ -160,6 +160,15 @@ A modern gifting platform where guests can contribute to specific items for the 
 Admin tool to rapidly populate the guestbook gallery with official event photography.
 - **Route**: `/guestbook/bulkupload` (Admin only).
 
+### 🖼️ Personalized OG Images
+Dynamic Open Graph images are now generated for each guest invitation (`/api/og?slug=...`). These cards display the guest's name and are used when sharing invitation links on social media (WhatsApp, Facebook, etc.).
+
+### 🛡️ Security Access (SayCode)
+A client-side security overlay (`SayCode`) has been implemented to protect public inputs (RSVP, Wishes, etc.) from automated bots during the event week.
+- **Trigger**: Active only between Jan 21 - Jan 27.
+- **Dismissal**: Users must answer a simple question (Answer: "10") or dismiss the overlay to interact with the site.
+- **Persistence**: Dismissal is saved in local storage.
+
 ---
 
 ## 📜 License
